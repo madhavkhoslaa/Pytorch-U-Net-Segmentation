@@ -17,7 +17,7 @@ class ImageLoader():
 
 class TrainSet(Dataset):
     def __init__(self, train_data, extension="jpeg", transform= None):
-        self.extension = extension
+        self.extension = extension.lower()
         self.transform = transform
         self.images = train_data["Images"]
         self.target_images = train_data["Annotations"]
@@ -39,7 +39,7 @@ class TrainSet(Dataset):
 
 class TestSet(Dataset):
     def __init__(self, test_data, extension="jpeg", transform=None):
-        self.extension = extension
+        self.extension = extension.lower()
         self.transform = transform
         self.images = test_data["Images"]
         self.target_images = test_data["Annotations"]
