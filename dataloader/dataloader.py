@@ -12,7 +12,7 @@ class ImageLoader():
         self.train_set = {"Images": self.Image[:train_len],
                         "Annotations": self.Annotations[:train_len]}
         self.test_set = {"Images": self.Image[train_len:], 
-                        "Annotations":self.Annotations[train_len:]}
+                        "Annotations": self.Annotations[train_len:]}
 
 
 class TrainSet(Dataset):
