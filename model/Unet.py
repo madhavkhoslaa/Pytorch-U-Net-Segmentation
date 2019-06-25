@@ -11,7 +11,7 @@ def double_conv(in_channels, out_channels):
     )
 
 
-class UNet(nn.Module):
+class UNeT(nn.Module):
     def __init__(self, n_class):
         super().__init__()
         self.dconv_down1 = double_conv(3, 64)
