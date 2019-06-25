@@ -3,7 +3,7 @@ import glob
 import skimage
 
 
-class ImageLoader(self):
+class ImageLoader():
     def __init__(self, Images, Annotations, train_percentage):
         self.Image = glob.glob(Images)
         self.Annotations = glob.glob(Images)
@@ -12,11 +12,11 @@ class ImageLoader(self):
         self.train_set = {"Images": self.Image[:train_len],
                         "Annotations": self.Annotations[:train_len]}
         self.test_set = {"Images": self.Image[train_len:], 
-                        self.Annotations[train_len:]}
+                        "Annotations":self.Annotations[train_len:]}
 
 
 class TrainSet(Dataset):
-    def __init__(self, train_data, extension="jpeg", transform):
+    def __init__(self, train_data, extension="jpeg", transform= None):
         self.extension = extension
         self.transform = transform
         self.images = train_data["Images"]
@@ -38,7 +38,7 @@ class TrainSet(Dataset):
 
 
 class TestSet(Dataset):
-    def __init__(self, test_data, extension="jpeg", transform):
+    def __init__(self, test_data, extension="jpeg", transform=None):
         self.extension = extension
         self.transform = transform
         self.images = test_data["Images"]
