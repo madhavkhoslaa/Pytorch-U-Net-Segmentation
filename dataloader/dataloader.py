@@ -30,6 +30,9 @@ class TrainSet(Dataset):
         if self.extension == "png":
             image = skimage.io.imread(self.images[index])[:3]
             label = skimage.io.imread(self.target_images)[:3]
+        if self.extension== "tif":
+            image = skimage.external.tifffile.imread(self.images[index])[:3]
+            label = skimage.external.tifffile.imread(self.target_images)[:3]
         else:
             image = skimage.io.imread(self.images[index])
             label = skimage.io.imread(self.target_images)
