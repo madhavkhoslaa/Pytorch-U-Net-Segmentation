@@ -13,8 +13,8 @@ if torch.cuda.is_available():
 else:
     net= net= UNeT(n_class=1)
 
-IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
-ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
+IMAGE_DIR = "~/DataSets/AerialImageDataset/train/images/*.tif"
+ANNOTATIONS_DIR = "~/DataSets/AerialImageDataset/train/gt/*.tif"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
