@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.optim as optim
 from model.Unet import UNeT
-from loss.Loss import loss
+from loss.diceloss import Loss
 from torch.utils.data import DataLoader
 from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, TrainSet, TestSet
@@ -13,13 +13,13 @@ if torch.cuda.is_available():
 else:
     net= net= UNeT(n_class=1)
 
-IMAGE_DIR = "~/DataSets/AerialImageDataset/train/images/*.tif"
-ANNOTATIONS_DIR = "~/DataSets/AerialImageDataset/train/gt/*.tif"
+IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
+ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
     train_percentage=0.7)
-loss_val = loss()
+loss_val = Loss()
 Train = TrainSet(Images.train_set, extension="tif", transform=None)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
 TrainLoder = DataLoader(
@@ -36,12 +36,9 @@ for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
-        if torch.cuda.is_available():
-            inputs, labels = data["Image"].cuda(), data["Label"].cuda()
-        else:
-            inputs, labels = data["Image"], data["Label"]
+        inputs, labels = data["Image"], data["Label"]
         optimizer.zero_grad()
-        outputs = net(inputs.unsqueeze_(1))
+        outputs = net(inputs)
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         loss.backward()
         optimizer.step()
