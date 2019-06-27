@@ -42,11 +42,11 @@ class TrainSet(Dataset):
 
 
 class TestSet(Dataset):
-    def __init__(self, test_data, extension="jpeg", transform=None):
+    def __init__(self, train_data, extension="jpeg", transform= None):
         self.extension = extension.lower()
         self.transform = transform
-        self.images = test_data["Images"]
-        self.target_images = test_data["Annotations"]
+        self.images = train_data["Images"]
+        self.target_images = train_data["Annotations"]
 
     def __len__(self):
         return len(self.images)
@@ -55,9 +55,12 @@ class TestSet(Dataset):
         if self.extension == "png":
             image = skimage.io.imread(self.images[index])[:3]
             label = skimage.io.imread(self.target_images)[:3]
+        if self.extension== "tif":
+            image = skimage.external.tifffile.imread(self.images[index])
+            label = skimage.external.tifffile.imread(self.target_images[index])
         else:
             image = skimage.io.imread(self.images[index])
-            label = skimage.io.imread(self.target_images)
+            label = skimage.io.imread(self.target_images[index])
         if self.transform:
             image = self.transform(image)
         return {"Image": image, "Label":  label}
