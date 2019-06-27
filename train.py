@@ -1,35 +1,48 @@
 import torch.nn as nn
 import torch.optim as optim
 from model.Unet import UNeT
-from loss import diceloss
+from loss.Loss import loss
 from torch.utils.data import DataLoader
 from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, TrainSet, TestSet
-from loss.diceloss import dice_loss, calc_loss
 from collections import defaultdict
+import torch
+params = hyperparameters(train_percentage=0.6, batch_size=10, epoch=4)
+if torch.cuda.is_available():
+    net= UNeT(n_class=1).cuda()
+else:
+    net= net= UNeT(n_class=1)
 
-
-params = hyperparameters(train_percentage=0.6, batch_size=4)
-net = UNeT(n_class=1)
-IMAGE_DIR = "~/DataSets/AerialImageDataset/train/images/"
-ANNOTATIONS_DIR = "~/DataSets/AerialImageDataset/train/gt/"
+IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
+ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=params.hyperparameters['train_percentage'],
-    extension="tif")
+    train_percentage=0.7)
+loss_val = loss()
 Train = TrainSet(Images.train_set, extension="tif", transform=None)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
+TrainLoder = DataLoader(
+    Train,
+    batch_size=params.hyperparameters["batch_size"],
+    shuffle=True)
+ValLoader = DataLoader(
+    Test,
+    batch_size=params.hyperparameters["batch_size"],
+    shuffle=True)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-for epoch in range(4):
-    metrics= defaultdict()
+for epoch in range(params.hyperparameters["epoch"]):
+    metrics = defaultdict()
     running_loss = 0.0
-    for i, data in enumerate(Train, 0):
-        inputs, labels = data
+    for i, data in enumerate(TrainLoder, 0):
+        if torch.cuda.is_available():
+            inputs, labels = data["Image"].cuda(), data["Label"].cuda()
+        else:
+            inputs, labels = data["Image"], data["Label"]
         optimizer.zero_grad()
-        outputs = net(inputs)
-        loss = calc_loss(outputs, labels, metrics,bce_weight=0.5)
+        outputs = net(inputs.unsqueeze_(1))
+        loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
