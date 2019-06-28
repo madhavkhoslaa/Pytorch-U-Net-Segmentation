@@ -5,17 +5,18 @@ from loss import diceloss
 from torch.utils.data import DataLoader
 from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, TrainSet, TestSet
-params = hyperparameters(train_percentage=0.6, batch_size=4)
+params = hyperparameters(train_percentage=1, batch_size=4)
 net = UNeT(n_class=1)
-IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
-ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
+IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images"
+ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=params.hyperparameters['train_percentage'])
+    train_percentage=params.hyperparameters['train_percentage'],
+    extension="tif")
 Train = TrainSet(Images.train_set, extension="tif", transform=None)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
 TrainLoder = DataLoader(Train, batch_size=4)
 for i, data in enumerate(TrainLoder, 0):
     inputs, labels = data["Image"], data["Label"]
-    print(inputs.size())
+    print(inputs, labels)
