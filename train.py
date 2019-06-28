@@ -7,7 +7,10 @@ from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, TrainSet, TestSet
 from collections import defaultdict
 import torch
-params = hyperparameters(train_percentage=0.6, batch_size=10, epoch=4)
+from torchvision import transforms
+
+transforms_compose= transforms.Compose([transforms.ToTensor()])
+params = hyperparameters(train_percentage=0.6, batch_size=1, epoch=4)
 if torch.cuda.is_available():
     net= UNeT(n_class=1).cuda()
 else:
@@ -20,7 +23,7 @@ Images = ImageLoader(
     Annotations=ANNOTATIONS_DIR,
     train_percentage=0.7)
 loss_val = Loss()
-Train = TrainSet(Images.train_set, extension="tif", transform=None)
+Train = TrainSet(Images.train_set, extension="tif", transform=transforms_compose)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
 TrainLoder = DataLoader(
     Train,
@@ -37,7 +40,7 @@ for epoch in range(params.hyperparameters["epoch"]):
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
         inputs, labels= data["Image"], data["Label"]
-        inputs, labels= inputs.transpose(0, 3).transpose(1, 2), labels.transpose(0, 3).transpose(1, 2)
+        #inputs, labels= inputs.permute(0, 3, 1, 2), labels.permute(0, 3, 1, 2)
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)

@@ -2,6 +2,8 @@ from torch.utils.data import Dataset
 import glob
 import skimage
 import torch
+import numpy as np
+
 
 class ImageLoader():
     def __init__(self, Images, Annotations,
@@ -36,8 +38,6 @@ class TrainSet(Dataset):
         else:
             image = skimage.io.imread(self.images[index])
             label = skimage.io.imread(self.target_images[index])
-        image= torch.from_numpy(image)
-        label= torch.from_numpy(label)
         if self.transform:
             image = self.transform(image)
         if torch.cuda.is_available():
