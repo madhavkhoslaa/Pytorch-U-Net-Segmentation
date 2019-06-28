@@ -7,9 +7,10 @@ import numpy as np
 
 class ImageLoader():
     def __init__(self, Images, Annotations,
-                 train_percentage):
-        self.Image = glob.glob(Images)
-        self.Annotations = glob.glob(Annotations)
+                 train_percentage, extension):
+        self.extension= "/*"+ extension
+        self.Image = glob.glob(Images+ self.extension)
+        self.Annotations = glob.glob(Annotations+ self.extension)
         self.train_percentage = train_percentage
         train_len = int(train_percentage * len(Images))
         self.train_set = {"Images": self.Image[:train_len],
