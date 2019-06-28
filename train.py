@@ -36,16 +36,16 @@ for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
-        inputs, labels = data["Image"], data["Label"]
+        inputs, labels= data["Image"], data["Label"]
+        inputs, labels= inputs.transpose(0, 3).transpose(1, 2), labels.transpose(0, 3).transpose(1, 2)
         optimizer.zero_grad()
         outputs = net(inputs)
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-        if i % 2000 == 1999:
-            print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 2000))
-            running_loss = 0.0
+        print('[%d, %5d] loss: %.3f' %
+        (epoch + 1, i + 1, running_loss / 2000))
+        running_loss = 0.
 
 print('Finished Training')

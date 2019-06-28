@@ -36,12 +36,14 @@ class TrainSet(Dataset):
         else:
             image = skimage.io.imread(self.images[index])
             label = skimage.io.imread(self.target_images[index])
+        image= torch.from_numpy(image)
+        label= torch.from_numpy(label)
         if self.transform:
             image = self.transform(image)
         if torch.cuda.is_available():
-            return {"Image": torch.from_numpy(image).permute(0, 3, 1, 2).cuda(), "Label": torch.from_numpy(label).permute(0, 3, 1, 2).cuda()}
+            return {"Image": image.cuda(), "Label": label.cuda()}
         else:
-            return {"Image": torch.from_numpy(image).permute(0, 3, 1, 2), "Label": torch.from_numpy(label).permute(0, 3, 1, 2)}
+            return {"Image": image, "Label": label}
 
 
 class TestSet(Dataset):
@@ -66,7 +68,9 @@ class TestSet(Dataset):
             label = skimage.io.imread(self.target_images[index])
         if self.transform:
             image = self.transform(image)
+        image= torch.from_numpy(image)
+        label= torch.from_numpy(label)
         if torch.cuda.is_available():
-            return {"Image": torch.from_numpy(image).permute(0, 3, 1, 2).cuda(), "Label": torch.from_numpy(label).permute(0, 3, 1, 2).cuda()}
+            return {"Image": image.cuda(), "Label": label.cuda()}
         else:
-            return {"Image": torch.from_numpy(image).permute(0, 3, 1, 2), "Label": torch.from_numpy(label).permute(0, 3, 1, 2)}
+            return {"Image": image, "Label": label}
