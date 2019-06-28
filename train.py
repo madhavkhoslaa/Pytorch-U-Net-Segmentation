@@ -10,7 +10,11 @@ import torch
 from torchvision import transforms
 
 transforms_compose = transforms.Compose([])
-params = hyperparameters(train_percentage=0.6, batch_size=1, epoch=4, n_class= 1)
+params = hyperparameters(
+    train_percentage=0.6,
+    batch_size=1,
+    epoch=4,
+    n_class=1)
 if torch.cuda.is_available():
     net = UNeT(params.hyperparameters["n_class"]).cuda()
 else:
@@ -21,7 +25,7 @@ ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=0.7, 
+    train_percentage=0.7,
     extension="tif")
 loss_val = Loss()
 Train = TrainSet(
@@ -45,15 +49,21 @@ for epoch in range(params.hyperparameters["epoch"]):
     for i, data in enumerate(TrainLoder, 0):
         inputs, labels = data["Image"], data["Label"]
         if torch.cuda.is_available()
-        inputs, labels= data["Image"].cuda(), data["Label"].cuda()
+        inputs, labels = data["Image"].cuda(), data["Label"].cuda()
         #inputs, labels= inputs.permute(0, 3, 1, 2), labels.permute(0, 3, 1, 2)
         print("optimizer.zero_grad()")
         optimizer.zero_grad()
         print("Fed to model")
         if torch.cuda.is_available():
-            outputs = net(inputs.permute(0, 3, 1, 2).type(torch.cuda.FloatTensor))
+            outputs = net(
+                inputs.permute(
+                    0, 3, 1, 2).type(
+                    torch.cuda.FloatTensor))
         else:
-            outputs = net(inputs.permute(0, 3, 1, 2).type(torch.cuda.FloatTensor))
+            outputs = net(
+                inputs.permute(
+                    0, 3, 1, 2).type(
+                    torch.cuda.FloatTensor))
         print("Calculating loss")
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         print("loss backward")
