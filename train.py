@@ -9,19 +9,20 @@ from collections import defaultdict
 import torch
 from torchvision import transforms
 
-transforms_compose = transforms.Compose([transforms.ToTensor()])
+transforms_compose = transforms.Compose([])
 params = hyperparameters(train_percentage=0.6, batch_size=1, epoch=4)
 if torch.cuda.is_available():
     net = UNeT(n_class=1).cuda()
 else:
     net = net = UNeT(n_class=1)
 
-IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
-ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
+IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images"
+ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt"
 Images = ImageLoader(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=0.7)
+    train_percentage=0.7, 
+    extension="tif")
 loss_val = Loss()
 Train = TrainSet(
     Images.train_set,
@@ -44,10 +45,15 @@ for epoch in range(params.hyperparameters["epoch"]):
     for i, data in enumerate(TrainLoder, 0):
         inputs, labels = data["Image"], data["Label"]
         #inputs, labels= inputs.permute(0, 3, 1, 2), labels.permute(0, 3, 1, 2)
+        print("optimizer.zero_grad()")
         optimizer.zero_grad()
-        outputs = net(inputs)
+        print("Fed to model")
+        outputs = net(inputs.permute(0, 3, 1, 2).type(torch.FloatTensor))
+        print("Calculating loss")
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
+        print("loss backward")
         loss.backward()
+        print("optimiser step")
         optimizer.step()
         running_loss += loss.item()
         print('[%d, %5d] loss: %.3f' %
