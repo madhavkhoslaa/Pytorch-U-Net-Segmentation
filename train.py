@@ -47,10 +47,10 @@ for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
-        inputs, labels = data["Image"], data["Label"]
-        if torch.cuda.is_available()
-        inputs, labels = data["Image"].cuda(), data["Label"].cuda()
-        #inputs, labels= inputs.permute(0, 3, 1, 2), labels.permute(0, 3, 1, 2)
+        if torch.cuda.is_available():
+            inputs, labels = data["Image"].cuda(), data["Label"].cuda()
+        else:
+            inputs, labels = data["Image"], data["Label"]
         print("optimizer.zero_grad()")
         optimizer.zero_grad()
         print("Fed to model")
@@ -64,7 +64,6 @@ for epoch in range(params.hyperparameters["epoch"]):
                 inputs.permute(
                     0, 3, 1, 2).type(
                     torch.cuda.FloatTensor))
-        print("Calculating loss")
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         print("loss backward")
         loss.backward()
