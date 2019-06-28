@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.functional as F
+
+
 class Loss:
     @classmethod
     def dice_loss(self, pred, target, smooth=1.):
@@ -8,7 +10,7 @@ class Loss:
         target = target.contiguous()
         intersection = (pred * target).sum(dim=2).sum(dim=2)
         loss = (1 - ((2. * intersection + smooth) /
-                    (pred.sum(dim=2).sum(dim=2) + target.sum(dim=2).sum(dim=2) + smooth)))
+                     (pred.sum(dim=2).sum(dim=2) + target.sum(dim=2).sum(dim=2) + smooth)))
         return loss.mean()
 
     def calc_loss(self, pred, target, metrics, bce_weight=0.5):

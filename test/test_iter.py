@@ -15,5 +15,7 @@ Images = ImageLoader(
     train_percentage=params.hyperparameters['train_percentage'])
 Train = TrainSet(Images.train_set, extension="tif", transform=None)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
-for i in range(len(Train)):
-    print(Train[i].size())
+TrainLoder = DataLoader(Train, batch_size=4)
+for i, data in enumerate(TrainLoder, 0):
+    inputs, labels = data["Image"], data["Label"]
+    print(inputs.size())

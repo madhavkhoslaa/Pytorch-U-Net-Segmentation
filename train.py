@@ -9,12 +9,12 @@ from collections import defaultdict
 import torch
 from torchvision import transforms
 
-transforms_compose= transforms.Compose([transforms.ToTensor()])
+transforms_compose = transforms.Compose([transforms.ToTensor()])
 params = hyperparameters(train_percentage=0.6, batch_size=1, epoch=4)
 if torch.cuda.is_available():
-    net= UNeT(n_class=1).cuda()
+    net = UNeT(n_class=1).cuda()
 else:
-    net= net= UNeT(n_class=1)
+    net = net = UNeT(n_class=1)
 
 IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images/*.tif"
 ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt/*.tif"
@@ -23,7 +23,10 @@ Images = ImageLoader(
     Annotations=ANNOTATIONS_DIR,
     train_percentage=0.7)
 loss_val = Loss()
-Train = TrainSet(Images.train_set, extension="tif", transform=transforms_compose)
+Train = TrainSet(
+    Images.train_set,
+    extension="tif",
+    transform=transforms_compose)
 Test = TestSet(Images.test_set, extension="tif", transform=None)
 TrainLoder = DataLoader(
     Train,
@@ -39,7 +42,7 @@ for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
-        inputs, labels= data["Image"], data["Label"]
+        inputs, labels = data["Image"], data["Label"]
         #inputs, labels= inputs.permute(0, 3, 1, 2), labels.permute(0, 3, 1, 2)
         optimizer.zero_grad()
         outputs = net(inputs)
@@ -48,7 +51,7 @@ for epoch in range(params.hyperparameters["epoch"]):
         optimizer.step()
         running_loss += loss.item()
         print('[%d, %5d] loss: %.3f' %
-        (epoch + 1, i + 1, running_loss / 2000))
+              (epoch + 1, i + 1, running_loss / 2000))
         running_loss = 0.
 
 print('Finished Training')

@@ -68,8 +68,8 @@ class TestSet(Dataset):
             label = skimage.io.imread(self.target_images[index])
         if self.transform:
             image = self.transform(image)
-        image= torch.from_numpy(image)
-        label= torch.from_numpy(label)
+        image = torch.from_numpy(image)
+        label = torch.from_numpy(label)
         if torch.cuda.is_available():
             return {"Image": image.cuda(), "Label": label.cuda()}
         else:
