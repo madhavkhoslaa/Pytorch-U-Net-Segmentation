@@ -81,17 +81,15 @@ for epoch in range(params.hyperparameters["epoch"]):
         print('[%d, %5d] loss: %.3f' %
               (epoch + 1, i + 1, running_loss / 2000))
         running_loss = 0.
-
+    with torch.no_grad():
+        for data in ValLoader:
+            iter= 0
+            if torch.cuda.is_available():
+                image, labels= data["Image"].cuda(), data["Label"].cuda()
+            else:
+                image, labels= data["Image"], data["Label"]
+            out= net(image)
+            torchvision.utils.save_image(out, str(epoch)+ "OutImage"+ str(iter)+ ".jpg")
 print('Finished Training')
 torch.save(net.state_dict() , MODEL_SAVE+ "/model.pt")
 print("Model saved")
-
-with torch.no_grad():
-    for data in ValLoader:
-        iter= 0
-        if torch.cuda.is_available():
-            image, labels= data["Image"].cuda(), data["Label"].cuda()
-        else:
-            image, labels= data["Image"], data["Label"]
-        out= net(image)
-        torchvision.utils.save_image(out, "OutImage"+ str(iter)+ ".jpg")
