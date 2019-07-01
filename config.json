@@ -1,5 +1,5 @@
 {
-    "Train Data": "",
-    "Test Data": "",
-    "Model Save:": ""
+    "Train Data": "/path/to/train/data",
+    "Test Data": "/path/to/test/data",
+    "Model Save:": "/path/to/save/model"
 }
