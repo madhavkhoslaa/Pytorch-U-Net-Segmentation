@@ -5,7 +5,7 @@ import torch
 import numpy as np
 
 
-class ImageLoader():
+class ImageList():
     def __init__(self, Images, Annotations,
                  train_percentage, extension):
         self.extension= "/*"+ extension
@@ -19,7 +19,7 @@ class ImageLoader():
                          "Annotations": self.Annotations[train_len:]}
 
 
-class TrainSet(Dataset):
+class ImageLoader(Dataset):
     def __init__(self, train_data, extension="jpeg", transform=None):
         self.extension = extension.lower()
         self.transform = transform
@@ -41,36 +41,6 @@ class TrainSet(Dataset):
             label = skimage.io.imread(self.target_images[index])
         if self.transform:
             image = self.transform(image)
-        if torch.cuda.is_available():
-            return {"Image": image.cuda(), "Label": label.cuda()}
-        else:
-            return {"Image": image, "Label": label}
-
-
-class TestSet(Dataset):
-    def __init__(self, train_data, extension="jpeg", transform=None):
-        self.extension = extension.lower()
-        self.transform = transform
-        self.images = train_data["Images"]
-        self.target_images = train_data["Annotations"]
-
-    def __len__(self):
-        return len(self.images)
-
-    def __getitem__(self, index):
-        if self.extension == "png":
-            image = skimage.io.imread(self.images[index])[:3]
-            label = skimage.io.imread(self.target_images)[:3]
-        if self.extension == "tif":
-            image = skimage.external.tifffile.imread(self.images[index])
-            label = skimage.external.tifffile.imread(self.target_images[index])
-        else:
-            image = skimage.io.imread(self.images[index])
-            label = skimage.io.imread(self.target_images[index])
-        if self.transform:
-            image = self.transform(image)
-        image = torch.from_numpy(image)
-        label = torch.from_numpy(label)
         if torch.cuda.is_available():
             return {"Image": image.cuda(), "Label": label.cuda()}
         else:
