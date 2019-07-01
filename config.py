@@ -4,5 +4,5 @@ class config():
     def __init__(self, config_file):
         with open(config_file) as conf_file:
             self.conf= json.load(conf_file)
-    def get_config():
+    def get_config(self):
         return self.conf
