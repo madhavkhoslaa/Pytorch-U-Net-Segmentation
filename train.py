@@ -12,6 +12,7 @@ import timeit
 import time
 import os
 
+
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
     train_percentage=0.6,
