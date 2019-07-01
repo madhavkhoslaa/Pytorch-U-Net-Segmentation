@@ -4,10 +4,13 @@ from model.Unet import UNeT
 from loss.diceloss import Loss
 from torch.utils.data import DataLoader
 from hyperparams.hyperparams import hyperparameters
-from dataloader.dataloader import ImageLoader, TrainSet, TestSet
+from dataloader.dataloader import ImageLoader, ImageList
 from collections import defaultdict
 import torch
 from torchvision import transforms
+import timeit
+import time
+
 
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
@@ -22,17 +25,17 @@ else:
 
 IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images"
 ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt"
-Images = ImageLoader(
+Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
     train_percentage=0.7,
     extension="tif")
 loss_val = Loss()
-Train = TrainSet(
+Train = ImageLoader(
     Images.train_set,
     extension="tif",
     transform=transforms_compose)
-Test = TestSet(Images.test_set, extension="tif", transform=None)
+Test = ImageLoader(Images.test_set, extension="tif", transform=None)
 TrainLoder = DataLoader(
     Train,
     batch_size=params.hyperparameters["batch_size"],
@@ -43,6 +46,7 @@ ValLoader = DataLoader(
     shuffle=True)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+start = time.time()
 for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
@@ -73,5 +77,5 @@ for epoch in range(params.hyperparameters["epoch"]):
         print('[%d, %5d] loss: %.3f' %
               (epoch + 1, i + 1, running_loss / 2000))
         running_loss = 0.
-
-print('Finished Training')
+end = time.time()
+print('Finished Training and took time ', start - end)
