@@ -11,7 +11,7 @@ from torchvision import transforms
 import os
 
 
-transforms_compose = transforms.Compose([transforms.ToTensor()])
+transforms_compose = transforms.Compose([])
 params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
