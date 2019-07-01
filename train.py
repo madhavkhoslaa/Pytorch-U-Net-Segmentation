@@ -26,7 +26,8 @@ else:
     net = net = UNeT(params.hyperparameters["n_class"])
 
 IMAGE_DIR= conf["Train Data"]
-ANNOTATIONS_DIR= conf["Test Data"]
+ANNOTATIONS_DIR= conf["Annotations Data"]
+TEST_DATA= conf["Test Data"]
 MODEL_SAVE= conf["Model Save"]
 Images = ImageList(
     Images=IMAGE_DIR,
