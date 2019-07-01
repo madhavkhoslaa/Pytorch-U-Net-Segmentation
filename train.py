@@ -10,7 +10,7 @@ import torch
 from torchvision import transforms
 import timeit
 import time
-
+import os
 
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
@@ -79,3 +79,4 @@ for epoch in range(params.hyperparameters["epoch"]):
         running_loss = 0.
 end = time.time()
 print('Finished Training and took time ', start - end)
+torch.save(net.state_dict , os.getcwd()+ "/model.pt")
