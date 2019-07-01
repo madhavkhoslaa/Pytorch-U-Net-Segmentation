@@ -1,6 +1,6 @@
 {
     "Train Data": "/Users/madhav/DataSets/AerialImageDataset/train/images",
     "Annotations Data": "/Users/madhav/DataSets/AerialImageDataset/train/gt",
-    "Model Save:": "",
-    "Test Data": ""
+    "Model Save:": ".",
+    "Test Data": "/Users/madhav/DataSets/AerialImageDataset/test/images"
 }
