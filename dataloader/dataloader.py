@@ -40,7 +40,8 @@ class ImageLoader(Dataset):
             image = skimage.io.imread(self.images[index])
             label = skimage.io.imread(self.target_images[index])
         if self.transform:
-            image = self.transform(image)
+            image= self.transform(image)
+            label= self.transform(label) 
         if torch.cuda.is_available():
             return {"Image": image.cuda(), "Label": label.cuda()}
         else:
