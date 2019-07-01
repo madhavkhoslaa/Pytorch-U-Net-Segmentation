@@ -9,7 +9,7 @@ from collections import defaultdict
 import torch
 from torchvision import transforms
 import os
-from config import Config
+from config.config import Config
 
 
 conf= Config('./config.json')
