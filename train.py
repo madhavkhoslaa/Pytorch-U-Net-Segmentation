@@ -66,6 +66,7 @@ for epoch in range(params.hyperparameters["epoch"]):
                 inputs.permute(
                     0, 3, 1, 2).type(
                     torch.FloatTensor))
+        print("Calculating Loss")       
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         print("loss backward")
         loss.backward()
