@@ -11,7 +11,7 @@ from torchvision import transforms
 import os
 
 
-transforms_compose = transforms.Compose([])
+transforms_compose = transforms.Compose([transforms.ToTensor()])
 params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
@@ -78,3 +78,14 @@ for epoch in range(params.hyperparameters["epoch"]):
 
 print('Finished Training')
 torch.save(net.state_dict() , os.getcwd()+ "/model.pt")
+print("Model saved")
+
+with torch.no_grad():
+    for data in ValLoader:
+        iter= 0
+        if torch.cuda.is_available():
+            image, labels= data["Image"].cuda(), data["Label"].cuda()
+        else:
+            image, labels= data["Image"], data["Label"]
+        out= net(image)
+        torchvision.utils.save_image(out, "OutImage"+ str(iter)+ ".jpg")
