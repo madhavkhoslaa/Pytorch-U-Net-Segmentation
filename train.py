@@ -1,4 +1,3 @@
-
 import torch.nn as nn
 import torch.optim as optim
 from model.Unet import UNeT
@@ -9,6 +8,7 @@ from dataloader.dataloader import ImageLoader, ImageList
 from collections import defaultdict
 import torch
 from torchvision import transforms
+
 
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
@@ -76,3 +76,4 @@ for epoch in range(params.hyperparameters["epoch"]):
         running_loss = 0.
 
 print('Finished Training')
+torch.save(net.state_dict() , os.getcwd()+ "/model.pt")
