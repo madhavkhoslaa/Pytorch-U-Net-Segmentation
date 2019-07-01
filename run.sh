@@ -1,3 +1,4 @@
+#downloads data, libraries and trains the model
 cd scripts
 chmod +x get-requirments.sh
 chmod +x getdataset.sh
