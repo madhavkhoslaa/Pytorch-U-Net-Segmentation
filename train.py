@@ -9,8 +9,11 @@ from collections import defaultdict
 import torch
 from torchvision import transforms
 import os
+from config import Config
 
 
+conf= Config('./config.json')
+conf= conf.load_conf()
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
     train_percentage=0.6,
@@ -22,8 +25,9 @@ if torch.cuda.is_available():
 else:
     net = net = UNeT(params.hyperparameters["n_class"])
 
-IMAGE_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/images"
-ANNOTATIONS_DIR = "/Users/madhav/DataSets/AerialImageDataset/train/gt"
+IMAGE_DIR= conf["Train Data"]
+ANNOTATIONS_DIR= conf["Test Data"]
+MODEL_SAVE= conf["Model Save"]
 Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
@@ -78,7 +82,7 @@ for epoch in range(params.hyperparameters["epoch"]):
         running_loss = 0.
 
 print('Finished Training')
-torch.save(net.state_dict() , os.getcwd()+ "/model.pt")
+torch.save(net.state_dict() , MODEL_SAVE+ "/model.pt")
 print("Model saved")
 
 with torch.no_grad():
