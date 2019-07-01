@@ -1,3 +1,4 @@
+
 import torch.nn as nn
 import torch.optim as optim
 from model.Unet import UNeT
@@ -8,10 +9,6 @@ from dataloader.dataloader import ImageLoader, ImageList
 from collections import defaultdict
 import torch
 from torchvision import transforms
-import timeit
-import time
-import os
-
 
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
@@ -47,7 +44,6 @@ ValLoader = DataLoader(
     shuffle=True)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-start = time.time()
 for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
     running_loss = 0.0
@@ -68,7 +64,7 @@ for epoch in range(params.hyperparameters["epoch"]):
             outputs = net(
                 inputs.permute(
                     0, 3, 1, 2).type(
-                    torch.cuda.FloatTensor))
+                    torch.FloatTensor))
         loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
         print("loss backward")
         loss.backward()
@@ -78,6 +74,5 @@ for epoch in range(params.hyperparameters["epoch"]):
         print('[%d, %5d] loss: %.3f' %
               (epoch + 1, i + 1, running_loss / 2000))
         running_loss = 0.
-end = time.time()
-print('Finished Training and took time ', start - end)
-torch.save(net.state_dict , os.getcwd()+ "/model.pt")
+
+print('Finished Training')
