@@ -42,7 +42,4 @@ class ImageLoader(Dataset):
         if self.transform:
             image= self.transform(image)
             label= self.transform(label) 
-        if torch.cuda.is_available():
-            return {"Image": image.cuda(), "Label": label.cuda()}
-        else:
-            return {"Image": image, "Label": label}
+        return {"Image": image, "Label": label}
