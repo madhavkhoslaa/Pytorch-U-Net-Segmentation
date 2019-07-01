@@ -2,7 +2,7 @@ from flask_restful import Resource, Api
 from flask import Flask
 from config import Config
 import torch
-from mode.Unet import UNeT
+from model.Unet import UNeT
 app= Flask(__name__)
 api= Api(app)
 class Segmented():
