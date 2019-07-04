@@ -17,7 +17,7 @@ conf= conf.load_conf()
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
     train_percentage=0.6,
-    batch_size=1,
+    batch_size=2,
     epoch=4,
     n_class=1)
 if torch.cuda.is_available():
