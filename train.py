@@ -20,7 +20,6 @@ params = hyperparameters(
     batch_size=2,
     epoch=4,
     n_class=1)
-torch.cuda.clear_memory_allocated()
 if torch.cuda.is_available():
     net = UNeT(params.hyperparameters["n_class"]).cuda()
 else:
