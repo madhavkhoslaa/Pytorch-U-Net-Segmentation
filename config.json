@@ -1,6 +1,6 @@
 {
     "Train Data": "./AerialImageDataset/train/images",
     "Annotations Data": "./AerialImageDataset/train/gt",
-    "Model Save:": ".",
+    "Model Save": ".",
     "Test Data": "./AerialImageDataset/test/images"
 }
