@@ -84,10 +84,8 @@ for epoch in range(params.hyperparameters["epoch"]):
     with torch.no_grad():
         for data in ValLoader:
             iter= 0
-            if torch.cuda.is_available():
-                image, labels= data["Image"].cuda(), data["Label"].cuda()
-            else:
-                image, labels= data["Image"], data["Label"]
+            
+            image, labels= data["Image"], data["Label"]
             out= net(image)
             torchvision.utils.save_image(out, str(epoch)+ "OutImage"+ str(iter)+ ".jpg")
 print('Finished Training')
