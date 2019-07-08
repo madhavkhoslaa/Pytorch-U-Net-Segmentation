@@ -14,7 +14,7 @@ class Loss:
         return loss.mean()
 
     def calc_loss(self, pred, target, metrics, bce_weight=0.5):
-        bce = torch.binary_cross_entropy_with_logits(pred, target)
+        bce = torch.nn.functional.binary_cross_entropy(pred, target)
         pred = torch.sigmoid(pred)
         dice = self.dice_loss(pred, target)
         loss = bce * bce_weight + dice * (1 - bce_weight)
