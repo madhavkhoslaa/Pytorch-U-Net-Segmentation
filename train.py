@@ -17,13 +17,13 @@ conf= conf.load_conf()
 transforms_compose = transforms.Compose([])
 params = hyperparameters(
     train_percentage=0.6,
-    batch_size=2,
+    batch_size=1,
     epoch=4,
-    n_class=1)
+    n_classes=30)
 if torch.cuda.is_available():
-    net = UNeT(params.hyperparameters["n_class"]).cuda()
+    net = UNeT(n_classes= 30, n_channels=3).cuda()
 else:
-    net = net = UNeT(params.hyperparameters["n_class"])
+    net = net = UNeT(n_classes=30, n_channels=3)
 
 IMAGE_DIR= conf["Train Data"]
 ANNOTATIONS_DIR= conf["Annotations Data"]
@@ -48,7 +48,7 @@ ValLoader = DataLoader(
     Test,
     batch_size=params.hyperparameters["batch_size"],
     shuffle=True)
-criterion = nn.CrossEntropyLoss()
+criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 for epoch in range(params.hyperparameters["epoch"]):
     metrics = defaultdict()
@@ -72,7 +72,7 @@ for epoch in range(params.hyperparameters["epoch"]):
                     0, 3, 1, 2).type(
                     torch.FloatTensor))
         print("Calculating Loss")       
-        loss = loss_val.calc_loss(outputs, labels, metrics, bce_weight=0.5)
+        loss = criterion(input= outputs.view(-1,1,1,1)[:2794500], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
         print("loss backward")
         loss.backward()
         print("optimiser step")
