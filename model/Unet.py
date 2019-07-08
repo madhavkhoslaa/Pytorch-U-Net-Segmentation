@@ -1,7 +1,7 @@
 import torch.nn.functional as F
 from .unet_parts import *
 
-class UNet(nn.Module):
+class UNeT(nn.Module):
     def __init__(self, n_channels, n_classes):
         super(UNet, self).__init__()
         self.inc = inconv(n_channels, 64)
