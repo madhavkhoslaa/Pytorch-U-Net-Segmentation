@@ -1,10 +1,7 @@
-# full assembly of the sub-parts to form the complete net
-
 import torch.nn.functional as F
-
 from .unet_parts import *
 
-class unet_parts(nn.Module):
+class UNet(nn.Module):
     def __init__(self, n_channels, n_classes):
         super(UNet, self).__init__()
         self.inc = inconv(n_channels, 64)
