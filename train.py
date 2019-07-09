@@ -62,9 +62,6 @@ for epoch in range(params.hyperparameters["epoch"]):
             inputs, labels = data["Image"].cuda(), data["Label"].cuda()
         else:
             inputs, labels = data["Image"], data["Label"]
-        print("optimizer.zero_grad()")
-        optimizer.zero_grad()
-        print("Fed to model")
         if torch.cuda.is_available():
             outputs = net(
                 inputs.type(
@@ -73,15 +70,11 @@ for epoch in range(params.hyperparameters["epoch"]):
             outputs = net(
                 inputs.type(
                     torch.FloatTensor))
-        print("Calculating Loss") 
-        print(outputs)      
         loss = criterion(input= outputs.view(-1,1,1,1)[:1116000], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
-        print("loss backward")
         loss.backward()
-        print("optimiser step")
         optimizer.step()
         running_loss += loss.item()
-        print("Epoch: {} | Loss: {}".format(int(epoch),loss.item()))
+        print("Epoch: {} | Loss: {} | Instance: {}".format(int(epoch),loss.item(), i))
         print("Running loss|", running_loss)
     with torch.no_grad():
         for data in ValLoader:
@@ -91,7 +84,7 @@ for epoch in range(params.hyperparameters["epoch"]):
             else:
                 image, labels= data["Image"], data["Label"]
             out= net(image)
-            out.save("epoch-"+ str(epoch)+ "OutImage"+ ".jpg")
+            torchvision.utils.save_image(out, str(epoch)+ "Out")
 print('Finished Training')
 torch.save(net.state_dict() , MODEL_SAVE+ "/model.pt")
 print("Model saved")
