@@ -7,6 +7,7 @@ from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, ImageList
 from collections import defaultdict
 import torch
+import torchvision
 from torchvision import transforms
 import os
 from config.config import Config
@@ -14,7 +15,13 @@ from config.config import Config
 
 conf= Config('./config.json')
 conf= conf.load_conf()
-transforms_compose = transforms.Compose([])
+IMAGE_DIR= conf["Train Data"]
+ANNOTATIONS_DIR= conf["Annotations Data"]
+TEST_DATA= conf["Test Data"]
+MODEL_SAVE= conf["Model Save"]
+IMAGE_RESOLUTION= tuple(map(int, conf['Resolution'].split(',')))
+transforms_compose = transforms.Compose([transforms.Resize(IMAGE_RESOLUTION[:2]),  transforms.ToTensor()])
+
 params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
@@ -25,10 +32,7 @@ if torch.cuda.is_available():
 else:
     net = net = UNeT(n_classes=30, n_channels=3)
 
-IMAGE_DIR= conf["Train Data"]
-ANNOTATIONS_DIR= conf["Annotations Data"]
-TEST_DATA= conf["Test Data"]
-MODEL_SAVE= conf["Model Save"]
+
 Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
@@ -36,10 +40,10 @@ Images = ImageList(
     extension="tif")
 loss_val = Loss()
 Train = ImageLoader(
-    Images.train_set,
+    data= Images.train_set,
     extension="tif",
     transform=transforms_compose)
-Test = ImageLoader(Images.test_set, extension="tif", transform=None)
+Test = ImageLoader(data= Images.test_set, extension="tif", transform=transforms_compose)
 TrainLoder = DataLoader(
     Train,
     batch_size=params.hyperparameters["batch_size"],
@@ -63,24 +67,22 @@ for epoch in range(params.hyperparameters["epoch"]):
         print("Fed to model")
         if torch.cuda.is_available():
             outputs = net(
-                inputs.permute(
-                    0, 3, 1, 2).type(
+                inputs.type(
                     torch.cuda.FloatTensor))
         else:
             outputs = net(
-                inputs.permute(
-                    0, 3, 1, 2).type(
+                inputs.type(
                     torch.FloatTensor))
-        print("Calculating Loss")       
-        loss = criterion(input= outputs.view(-1,1,1,1)[:2794500], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
+        print("Calculating Loss") 
+        print(outputs)      
+        loss = criterion(input= outputs.view(-1,1,1,1)[:1116000], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
         print("loss backward")
         loss.backward()
         print("optimiser step")
         optimizer.step()
         running_loss += loss.item()
-        print('[%d, %5d] loss: %.3f' %
-              (epoch + 1, i + 1, running_loss / 2000))
-        running_loss = 0.
+        print("Epoch: {} | Loss: {}".format(int(epoch),loss.item()))
+        print("Running loss|", running_loss)
     with torch.no_grad():
         for data in ValLoader:
             iter= 0
@@ -89,7 +91,7 @@ for epoch in range(params.hyperparameters["epoch"]):
             else:
                 image, labels= data["Image"], data["Label"]
             out= net(image)
-            torchvision.utils.save_image(out, str(epoch)+ "OutImage"+ str(iter)+ ".jpg")
+            out.save("epoch-"+ str(epoch)+ "OutImage"+ ".jpg")
 print('Finished Training')
 torch.save(net.state_dict() , MODEL_SAVE+ "/model.pt")
 print("Model saved")
