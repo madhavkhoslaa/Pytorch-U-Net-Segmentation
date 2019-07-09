@@ -1,8 +1,10 @@
 from torch.utils.data import Dataset
 import glob
-import skimage
 import torch
 import numpy as np
+import json
+import sys
+from PIL import Image
 
 
 class ImageList():
@@ -20,26 +22,26 @@ class ImageList():
 
 
 class ImageLoader(Dataset):
-    def __init__(self, train_data, extension="jpeg", transform=None):
+    def __init__(self,data, extension="jpeg", transform=None):
         self.extension = extension.lower()
         self.transform = transform
-        self.images = train_data["Images"]
-        self.target_images = train_data["Annotations"]
+        self.images = data["Images"]
+        self.target_images = data["Annotations"]
 
     def __len__(self):
         return len(self.images)
 
     def __getitem__(self, index):
         if self.extension == "png":
-            image = skimage.io.imread(self.images[index])[:3]
-            label = skimage.io.imread(self.target_images)[:3]
+            image = Image.open(self.images[index])[:3]
+            label = Image.open(self.target_images)[:3]
         if self.extension == "tif":
-            image = skimage.external.tifffile.imread(self.images[index])
-            label = skimage.external.tifffile.imread(self.target_images[index])
+            image = Image.open(self.images[index])
+            label = Image.open(self.target_images[index])
         else:
-            image = skimage.io.imread(self.images[index])
-            label = skimage.io.imread(self.target_images[index])
+            image = Image.open(self.images[index])
+            label = Image.open(self.target_images[index])
         if self.transform:
             image= self.transform(image)
-            label= self.transform(label) 
+            label= self.transform(label)
         return {"Image": image, "Label": label}
