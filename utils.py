@@ -25,7 +25,6 @@ Train = ImageLoader(
     data= Images.train_set,
     extension="tif",
     transform=transforms_compose)
-Test = ImageLoader(data= Images.test_set, extension="tif", transform=transforms_compose)
 TrainLoder = DataLoader(
     Train,
     batch_size=1,
