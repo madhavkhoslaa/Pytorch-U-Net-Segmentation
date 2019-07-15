@@ -11,6 +11,7 @@ import torchvision
 from torchvision import transforms
 import os
 from config.config import Config
+import scipy.misc
 
 
 conf= Config('./config.json')
@@ -30,13 +31,13 @@ params = hyperparameters(
 if torch.cuda.is_available():
     net = UNeT(n_classes= 30, n_channels=3).cuda()
 else:
-    net = net = UNeT(n_classes=30, n_channels=3)
+    net = UNeT(n_classes=30, n_channels=3)
 
 
 Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=0.7,
+    train_percentage=0.1,
     extension="tif")
 loss_val = Loss()
 Train = ImageLoader(
@@ -73,18 +74,9 @@ for epoch in range(params.hyperparameters["epoch"]):
         loss = criterion(input= outputs.view(-1,1,1,1)[:1116000], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
         loss.backward()
         optimizer.step()
+        print(outputs.size())
         running_loss += loss.item()
         print("Epoch: {} | Loss: {} | Instance: {}".format(int(epoch),loss.item(), i))
         print("Running loss|", running_loss)
-    with torch.no_grad():
-        for data in ValLoader:
-            iter= 0
-            if torch.cuda.is_available():
-                image, labels= data["Image"].cuda(), data["Label"].cuda()
-            else:
-                image, labels= data["Image"], data["Label"]
-            out= net(image)
-            torchvision.utils.save_image(out, str(epoch)+ "Out")
-print('Finished Training')
 torch.save(net.state_dict() , MODEL_SAVE+ "/model.pt")
 print("Model saved")
