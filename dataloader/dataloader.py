@@ -8,6 +8,9 @@ from PIL import Image
 
 
 class ImageList():
+    """Give the Image and Annotations direcectory and train_percentage 
+        it generates a list of image paths which are passed to the 
+        Image loaders"""
     def __init__(self, Images, Annotations,
                  train_percentage, extension):
         self.extension= "/*"+ extension
@@ -22,6 +25,8 @@ class ImageList():
 
 
 class ImageLoader(Dataset):
+    """Takes a data dict generated from the ImageList class.
+        Make object pass the training/test dataset and loop through it"""
     def __init__(self,data, extension="jpeg", transform=None):
         self.extension = extension.lower()
         self.transform = transform
