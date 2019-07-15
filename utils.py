@@ -2,7 +2,6 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from dataloader.dataloader import ImageLoader, ImageList
 import torch
-import torchvision
 from torchvision import transforms
 from config.config import Config
 
@@ -30,12 +29,15 @@ TrainLoder = DataLoader(
     batch_size=1,
     shuffle=True)
 def get_out_size(model):
+    """Iterates through the dataset like in training but does not calculate loss
+        does not backprop just calculates the output size."""
     for epoch in range(1):
         for i, data in enumerate(TrainLoder, 0):
             if torch.cuda.is_available():
                 inputs, labels = data["Image"].cuda(), data["Label"].cuda()
             else:
                 inputs, labels = data["Image"], data["Label"]
+            del labels
             if torch.cuda.is_available():
                 outputs = model(
                     inputs.type(
