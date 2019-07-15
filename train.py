@@ -12,6 +12,8 @@ from torchvision import transforms
 import os
 from config.config import Config
 import scipy.misc
+from utils import get_out_size
+from tqdm import tqdm 
 
 
 conf= Config('./config.json')
@@ -55,7 +57,8 @@ ValLoader = DataLoader(
     shuffle=True)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-for epoch in range(params.hyperparameters["epoch"]):
+MODEL_OUTPUT_SIZE= get_out_size(net)
+for epoch in tqdm(range(params.hyperparameters["epoch"]), desc= "Training Loop"):
     metrics = defaultdict()
     running_loss = 0.0
     for i, data in enumerate(TrainLoder, 0):
