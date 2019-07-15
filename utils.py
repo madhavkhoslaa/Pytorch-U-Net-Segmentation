@@ -46,5 +46,5 @@ def get_out_size(model):
                 outputs = model(
                     inputs.type(
                         torch.FloatTensor))
-            return outputs.size()
+            return tuple(outputs.size())
 
