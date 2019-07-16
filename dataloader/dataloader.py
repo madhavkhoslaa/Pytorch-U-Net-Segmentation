@@ -5,7 +5,7 @@ import numpy as np
 import json
 import sys
 from PIL import Image
-
+from utils.one_hot_encoder import HotEncoder
 
 class ImageList():
     """Give the Image and Annotations direcectory and train_percentage 
@@ -22,6 +22,8 @@ class ImageList():
                           "Annotations": self.Annotations[:train_len]}
         self.test_set = {"Images": self.Image[train_len:],
                          "Annotations": self.Annotations[train_len:]}
+        encoder= HotEncoder(dir= self.Annotations, extension= self.extension)
+        self.color_code= encoder.gen_colors()
 
 
 class ImageLoader(Dataset):
