@@ -7,12 +7,9 @@ from hyperparams.hyperparams import hyperparameters
 from dataloader.dataloader import ImageLoader, ImageList
 from collections import defaultdict
 import torch
-import torchvision
 from torchvision import transforms
-import os
 from config.config import Config
-import scipy.misc
-from utils import get_out_size
+from utils.utils import get_out_size
 from tqdm import tqdm 
 
 
@@ -29,11 +26,11 @@ params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
     epoch=4,
-    n_classes=30)
+    n_classes=1)
 if torch.cuda.is_available():
-    net = UNeT(n_classes= 30, n_channels=3).cuda()
+    net = UNeT(n_classes= 1, n_channels=3).cuda()
 else:
-    net = UNeT(n_classes=30, n_channels=3)
+    net = UNeT(n_classes= 1, n_channels=3)
 
 
 Images = ImageList(
@@ -58,6 +55,7 @@ ValLoader = DataLoader(
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 MODEL_OUTPUT_SIZE= get_out_size(net)
+print("MODEL_OUTPUT_SIZE", MODEL_OUTPUT_SIZE)
 for epoch in tqdm(range(params.hyperparameters["epoch"]), desc= "Training Loop"):
     metrics = defaultdict()
     running_loss = 0.0
@@ -74,7 +72,7 @@ for epoch in tqdm(range(params.hyperparameters["epoch"]), desc= "Training Loop")
             outputs = net(
                 inputs.type(
                     torch.FloatTensor))
-        loss = criterion(input= outputs.view(-1,1,1,1)[:1116000], target=labels.view(-1,1,1,1).type(torch.FloatTensor))
+        loss = criterion(input= outputs.view(-1,1,1,1)[:], target=labels.view(-1,1,1,1).type(torch.FloatTensor)[:372000])
         loss.backward()
         optimizer.step()
         print(outputs.size())
