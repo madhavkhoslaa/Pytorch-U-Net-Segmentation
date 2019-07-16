@@ -28,5 +28,5 @@ class HotEncoder():
                     self.color.add(tuple(image[x][y][:]))
         return self.color
 
-    def HotEncode(self):
+    def gen_class_image(self):
         pass
