@@ -38,7 +38,7 @@ def get_out_size(model):
             inputs, labels = data["Image"].cuda(), data["Label"].cuda()
         else:
             inputs, labels = data["Image"], data["Label"]
-            del labels
+        del labels
         if torch.cuda.is_available():
             outputs = model(
                 inputs.type(torch.cuda.FloatTensor))

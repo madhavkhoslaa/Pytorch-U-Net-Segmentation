@@ -1,7 +1,7 @@
 from utils.one_hot_encoder import HotEncoder
 import  numpy as np
 import skimage
-encoder= HotEncoder(dir= "/Users/madhav/Desktop/", extension="jpeg", is_binary= False)
+encoder= HotEncoder(dir= "/Users/madhav/Desktop/", extension="png", is_binary= False)
 color_dict= encoder.gen_colors()
 print(color_dict)
 print(len(color_dict))
