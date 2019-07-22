@@ -57,5 +57,10 @@ class HotEncoder():
         for x in range(shape_[0]):
             for y in range(shape_[1]):
                 category= int(class_map[x][y])
-                encoded[x][y][category]= 255
+                encoded[x][y][category]= 1
         return encoded
+
+        def channelSplit(self,Nch_Hot_encoded):
+            """The hot encoded Image is stored as stack of Hot encoded ndarrays
+                this function returns a list of cll the channels"""
+            return np.dsplit(Nch_Hot_encoded,Nch_Hot_encoded.shape[-1])
