@@ -5,10 +5,11 @@ import numpy as np
 
 
 class HotEncoder():
-    def __init__(self, dir, extension, is_binary=True):
+    def __init__(self, n_classes,dir, extension, is_binary=True):
         self.dir = dir
         self.extension = extension
         self.is_binary = is_binary
+        self.n_classes= n_classes
         if is_binary:
             self.color = {(0, 0, 0): 1, (255, 255, 255): 2}
         else:
@@ -21,16 +22,19 @@ class HotEncoder():
         if self.is_binary:
             return self.color
         else:
-            n_color=0
+            n_color=1
             images = glob.glob(self.dir + '/*.' + self.extension)
             for img in tqdm(images, desc="Generating Color Pallte to Hot Encode"):
-                image = skimage.io.imread(img)
+                if self.extension=='tif':
+                    image= skimage.external.tifffile.imread(img)
+                else:
+                    image = skimage.io.imread(img)
                 shape_ = image.shape
                 for x in range(shape_[0]):
                     for y in range(shape_[1]):
                         clr= tuple(image[x][y][:])
                         if clr not in self.color.keys():
-                            self.color.update({clr[:3]: n_color})
+                            self.color.update({clr: n_color})
                             n_color+=1
                         else:
                             pass
@@ -47,6 +51,11 @@ class HotEncoder():
                 class_map[x][y]= self.color[clr]
         return class_map
     def HotEncode(self, class_map):
-        pass
-
-
+        assert isinstance(class_map, np.ndarray), "Class map has to be an ndarray and not {}".format(type(class_map))
+        shape_= class_map.shape
+        encoded= np.zeros(shape= (shape_[0], shape_[1], self.n_classes), dtype=float)
+        for x in range(shape_[0]):
+            for y in range(shape_[1]):
+                category= int(class_map[x][y])
+                encoded[x][y][category]= 255
+        return encoded
