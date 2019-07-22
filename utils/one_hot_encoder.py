@@ -13,7 +13,7 @@ class HotEncoder():
             self.color = {(0, 0, 0): 1, (255, 255, 255): 2}
         else:
             self.color = dict()
-
+    
     def gen_colors(self):
         """Iterates through the entire dataset and finds the total colours
             in the images so that they can be used to one hot the image matrix
@@ -21,7 +21,7 @@ class HotEncoder():
         if self.is_binary:
             return self.color
         else:
-            n_color=1
+            n_color=0
             images = glob.glob(self.dir + '/*.' + self.extension)
             for img in tqdm(images, desc="Generating Color Pallte to Hot Encode"):
                 image = skimage.io.imread(img)
@@ -30,7 +30,7 @@ class HotEncoder():
                     for y in range(shape_[1]):
                         clr= tuple(image[x][y][:])
                         if clr not in self.color.keys():
-                            self.color.update({clr: n_color})
+                            self.color.update({clr[:3]: n_color})
                             n_color+=1
                         else:
                             pass
@@ -39,16 +39,12 @@ class HotEncoder():
     def PerPixelClassMatrix(self, Image):
         """Takes an Image and returns a per pixel class
             identification map"""
-        class_list= []
         shape_= Image.shape
+        class_list= np.zeros(shape= (shape_[0], shape_[1]), dtype=float)
         for x in range(shape_[0]):
             for y in range(shape_[1]):
-                clr= tuple(Image[x][y][:])
-                if clr in self.color.keys():
-                    class_list.append(self.color[clr])
-                else:
-                    pass
+                clr= tuple(Image[x][y][:])[:3]
+                class_list[x][y]= self.color[clr]
         return class_list
 
 
-        

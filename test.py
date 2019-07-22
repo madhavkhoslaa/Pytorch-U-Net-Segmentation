@@ -1,10 +1,9 @@
 from utils.one_hot_encoder import HotEncoder
 import  numpy as np
 import skimage
+img__= skimage.io.imread("/Users/madhav/Desktop/Screenshot 2019-07-17 at 11.27.51 PM.png")
 encoder= HotEncoder(dir= "/Users/madhav/Desktop/", extension="png", is_binary= False)
 color_dict= encoder.gen_colors()
-print(color_dict)
-print(len(color_dict))
 
 def rgb_to_onehot(rgb_arr, color_dict):
     num_classes = len(color_dict)
@@ -21,3 +20,5 @@ def onehot_to_rgb(onehot, color_dict):
     for k in color_dict.keys():
         output[single_layer==k] = color_dict[k]
     return np.uint8(output)
+class_mat= encoder.PerPixelClassMatrix(img__)
+print(class_mat)
