@@ -8,3 +8,6 @@ encoder= HotEncoder(dir= '/Users/madhav/DataSets/data_semantics/training/semanti
 color_dict= encoder.gen_colors()
 onehottt= encoder.PerPixelClassMatrix(img__)
 encoded= encoder.HotEncode(onehottt)
+ch= encoder.channelSplit(encoded)
+for _ in range(30):
+    skimage.io.imsave(arr= ch[_].reshape(375,1242), fname= str(_)+".jpeg")
