@@ -13,7 +13,7 @@ from utils.utils import get_out_size
 from tqdm import tqdm
 
 
-conf = Config('./config.json')
+conf = Config('./conf_files/config.json')
 conf = conf.load_conf()
 IMAGE_DIR = conf["Train Data"]
 ANNOTATIONS_DIR = conf["Annotations Data"]
