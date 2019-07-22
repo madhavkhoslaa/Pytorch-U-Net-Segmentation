@@ -40,11 +40,13 @@ class HotEncoder():
         """Takes an Image and returns a per pixel class
             identification map"""
         shape_= Image.shape
-        class_list= np.zeros(shape= (shape_[0], shape_[1]), dtype=float)
+        class_map= np.zeros(shape= (shape_[0], shape_[1]), dtype=float)
         for x in range(shape_[0]):
             for y in range(shape_[1]):
                 clr= tuple(Image[x][y][:])[:3]
-                class_list[x][y]= self.color[clr]
-        return class_list
+                class_map[x][y]= self.color[clr]
+        return class_map
+    def HotEncode(self, class_map):
+        pass
 
 
