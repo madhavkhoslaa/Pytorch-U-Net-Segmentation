@@ -51,6 +51,8 @@ class HotEncoder():
                 class_map[x][y]= self.color[clr]
         return class_map
     def HotEncode(self, class_map):
+        """Inputs the class map of the image and returns the hot encoded
+        N channel output. Each channel represents the presence of a class per pixel"""
         assert isinstance(class_map, np.ndarray), "Class map has to be an ndarray and not {}".format(type(class_map))
         shape_= class_map.shape
         encoded= np.zeros(shape= (shape_[0], shape_[1], self.n_classes), dtype=float)
