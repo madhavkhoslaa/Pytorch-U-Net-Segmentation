@@ -8,4 +8,4 @@ Test image forwardpass and produce test image output and test image pairs</p>
 
  <a href="https://veniversum.me/git-visualizer/?owner=madhavkhoslaa&repo=Pytorch-U-Net-Segmentation">To Understand Repo structure</a>
  
-![](https://imgur.com/a/KseypbS  )
+![](https://i.imgur.com/x4tV3pU.png)
