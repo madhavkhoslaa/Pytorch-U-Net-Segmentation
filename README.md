@@ -4,3 +4,6 @@ The script/getdataset.sh downloads the <a href="https://project.inria.fr/aeriali
 <p>If you feel any need to contribute don’t feel shy to do a <a href="https://github.com/madhavkhoslaa/U-Net-Segmentation/pulls">pull request</a> or <a href="mailto:madhavkhosla@cock.li">contact me</a>:D</p>
 <p>TODO<br>
 Test image forwardpass and produce test image output and test image pairs</p>
+
+![To Understand the repo structure](https://imgur.com/a/KseypbS)
+
