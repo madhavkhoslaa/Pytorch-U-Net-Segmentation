@@ -5,13 +5,13 @@ import numpy as np
 
 
 class HotEncoder():
-    def __init__(self, n_classes,dir, extension, is_binary=True):
+    def __init__(self, n_classes,dir, extension, is_binary=False):
         self.dir = dir
         self.extension = extension
         self.is_binary = is_binary
         self.n_classes= n_classes
         if is_binary:
-            self.color = {(0, 0, 0): 1, (255, 255, 255): 2}
+            self.color = {(0, 0, 0): 0, (255, 255, 255): 1}
         else:
             self.color = dict()
     
@@ -50,7 +50,7 @@ class HotEncoder():
                 clr= tuple(Image[x][y][:])[:3]
                 class_map[x][y]= self.color[clr]
         return class_map
-    def HotEncode(self, class_map):
+    def hotEncode(self, class_map):
         """Inputs the class map of the image and returns the hot encoded
         N channel output. Each channel represents the presence of a class per pixel"""
         assert isinstance(class_map, np.ndarray), "Class map has to be an ndarray and not {}".format(type(class_map))

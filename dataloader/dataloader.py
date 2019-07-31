@@ -6,6 +6,7 @@ import json
 import sys
 from PIL import Image
 from utils.one_hot_encoder import HotEncoder
+from utils.one_hot_encoder.HotEncoder import PerPixelClassMatrix, hotEncode
 
 class ImageList():
     """Give the Image and Annotations direcectory and train_percentage 
@@ -22,7 +23,7 @@ class ImageList():
                           "Annotations": self.Annotations[:train_len]}
         self.test_set = {"Images": self.Image[train_len:],
                          "Annotations": self.Annotations[train_len:]}
-        encoder= HotEncoder(dir= self.Annotations, extension= self.extension)
+        encoder= HotEncoder(dir= self.Annotations, n_classes=2,extension= self.extension, is_binary= True)
         self.color_code= encoder.gen_colors()
 
 
@@ -42,13 +43,11 @@ class ImageLoader(Dataset):
         if self.extension == "png":
             image = Image.open(self.images[index])[:3]
             label = Image.open(self.target_images)[:3]
-        if self.extension == "tif":
-            image = Image.open(self.images[index])
-            label = Image.open(self.target_images[index])
         else:
             image = Image.open(self.images[index])
             label = Image.open(self.target_images[index])
         if self.transform:
             image= self.transform(image)
             label= self.transform(label)
+        label= hotEncode(PerPixelClassMatrix(label))
         return {"Image": image, "Label": label}
