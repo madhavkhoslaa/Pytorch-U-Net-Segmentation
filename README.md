@@ -5,5 +5,5 @@ The script/getdataset.sh downloads the <a href="https://project.inria.fr/aeriali
 <p>TODO<br>
 Test image forwardpass and produce test image output and test image pairs</p>
 
-![To Understand the repo structure](https://imgur.com/a/KseypbS)
+![To Understand the repo structure](https://veniversum.me/git-visualizer/?owner=madhavkhoslaa&repo=Pytorch-U-Net-Segmentation)
 
