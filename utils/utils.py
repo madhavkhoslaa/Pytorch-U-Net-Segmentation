@@ -5,7 +5,7 @@ from torchvision import transforms
 from config.config import Config
 
 
-conf = Config('./config.json')
+conf = Config('../conf_files/config.json')
 conf = conf.load_conf()
 IMAGE_DIR = conf["Train Data"]
 ANNOTATIONS_DIR = conf["Annotations Data"]
