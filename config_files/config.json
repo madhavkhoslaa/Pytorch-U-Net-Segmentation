@@ -1,7 +1,0 @@
-{
-    "Train Data": "/Users/madhav/DataSets/data_semantics/training/image_2",
-    "Annotations Data": "/Users/madhav/DataSets/data_semantics/training/semantic_rgb",
-    "Model Save": ".",
-    "Test Data": "./AerialImageDataset/test/images",
-    "Resolution": "300,1240,3"
-}
