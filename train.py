@@ -9,11 +9,11 @@ from collections import defaultdict
 import torch
 from torchvision import transforms
 from config.config import Config
-from utils.utils import get_out_size
 from tqdm import tqdm
+from utils.one_hot_encoder import HotEncoder
 
 
-conf = Config('./conf_files/config.json')
+conf = Config('config.json')
 conf = conf.load_conf()
 IMAGE_DIR = conf["Train Data"]
 ANNOTATIONS_DIR = conf["Annotations Data"]
@@ -32,7 +32,8 @@ if torch.cuda.is_available():
     net = UNeT(n_classes=1, n_channels=3).cuda()
 else:
     net = UNeT(n_classes=1, n_channels=3)
-
+encoder= HotEncoder(is_binary= False, dir= ANNOTATIONS_DIR, extension="tif")
+color_dict= encoder.gen_colors()
 
 Images = ImageList(
     Images=IMAGE_DIR,
@@ -41,14 +42,16 @@ Images = ImageList(
     extension="tif")
 loss_val = Loss()
 Train = ImageLoader(
+    encoder_obj= encoder,
     data=Images.train_set,
     extension="tif",
     transform=transforms_compose)
 Test = ImageLoader(
+    encoder_obj= encoder,
     data=Images.test_set,
     extension="tif",
     transform=transforms_compose)
-TrainLoder = DataLoader(
+TrainLoader = DataLoader(
     Train,
     batch_size=params.hyperparameters["batch_size"],
     shuffle=True)
@@ -58,8 +61,13 @@ ValLoader = DataLoader(
     shuffle=True)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-MODEL_OUTPUT_SIZE = get_out_size(net)
-print("MODEL_OUTPUT_SIZE", MODEL_OUTPUT_SIZE)
+
+
+for i, data in enumerate(TrainLoader, 0):
+    inputs, labels= data["Image"], data["Label"]
+    print(inputs, labels)
+
+"""
 for epoch in tqdm(
         range(params.hyperparameters["epoch"]), desc="Training Loop"):
     metrics = defaultdict()
@@ -97,3 +105,4 @@ for epoch in tqdm(
         print("Running loss|", running_loss)
 torch.save(net.state_dict(), MODEL_SAVE + "/model.pt")
 print("Model saved")
+"""
