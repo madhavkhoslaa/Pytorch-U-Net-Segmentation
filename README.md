@@ -12,4 +12,4 @@
 
 > [To Understand Repo structure](https://veniversum.me/git-visualizer/?owner=madhavkhoslaa&repo=Pytorch-U-Net-Segmentation) 
 
->Credits: [milesial](https://github.com/milesial/Pytorch-UNet)
+>Credits: [milesial's UNET Repository](https://github.com/milesial/Pytorch-UNet)
