@@ -89,7 +89,8 @@ for epoch in tqdm(
                          target=labels.view(-1,
                                             1,
                                             1,
-                                            1).type(torch.FloatTensor)[:372000])
+                                            1).type(torch.FloatTensor))
+        #There was a dimension strip above here check if you need it again, lad.
         loss.backward()
         optimizer.step()
         print(outputs.size())
@@ -101,4 +102,4 @@ for epoch in tqdm(
                 i))
         print("Running loss|", running_loss)
 torch.save(net.state_dict(), MODEL_SAVE + "/model.pt")
-print("Model saved")
+print("Model saved")     
