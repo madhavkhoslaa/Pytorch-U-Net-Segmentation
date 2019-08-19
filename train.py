@@ -29,9 +29,9 @@ params = hyperparameters(
     epoch=4,
     n_classes=1)
 if torch.cuda.is_available():
-    net = UNeT(n_classes=1, n_channels=3).cuda()
+    net = UNeT(n_classes=29, n_channels=3).cuda()
 else:
-    net = UNeT(n_classes=1, n_channels=3)
+    net = UNeT(n_classes=29, n_channels=3)
 encoder= HotEncoder(is_binary= False, dir= ANNOTATIONS_DIR, extension="tif")
 color_dict= encoder.gen_colors()
 
@@ -82,18 +82,11 @@ for epoch in tqdm(
             outputs = net(
                 inputs.type(
                     torch.FloatTensor))
-        loss = criterion(input=outputs.view(-1,
-                                            1,
-                                            1,
-                                            1)[:],
-                         target=labels.view(-1,
-                                            1,
-                                            1,
-                                            1).type(torch.FloatTensor))
+        loss = criterion(input=outputs,
+                         target=labels)
         #There was a dimension strip above here check if you need it again, lad.
         loss.backward()
         optimizer.step()
-        print(outputs.size())
         running_loss += loss.item()
         print(
             "Epoch: {} | Loss: {} | Instance: {}".format(
