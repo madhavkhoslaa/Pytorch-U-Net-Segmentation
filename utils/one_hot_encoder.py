@@ -44,10 +44,10 @@ class HotEncoder():
         """Takes an Image and returns a per pixel class
             identification map"""
         if color_dict is None:
-            color_dict = self.color_dict
+            color_dict = self.color
         else:
             assert isinstance(color_dict, dict)
-        shape_ = Image.shape
+        shape_ = np.array(Image).shape
         class_map = np.zeros(shape=(shape_[0], shape_[1]), dtype=float)
         for x in range(shape_[0]):
             for y in range(shape_[1]):
@@ -66,12 +66,12 @@ class HotEncoder():
             shape=(
                 shape_[0],
                 shape_[1],
-                self.n_classes),
+                len(self.color)),
             dtype=float)
         for x in range(shape_[0]):
             for y in range(shape_[1]):
                 category = int(class_map[x][y])
-                encoded[x][y][category] = 1
+                encoded[x][y][category] = 255
         return encoded
 
     def channelSplit(self, Nch_Hot_encoded):
