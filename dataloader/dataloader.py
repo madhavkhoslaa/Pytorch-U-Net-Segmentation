@@ -1,13 +1,13 @@
 from torch.utils.data import Dataset
 import glob
-import torch
 import numpy as np
 import json
 import sys
-from PIL import Image
 from utils.one_hot_encoder import HotEncoder
 from skimage import io
 import skimage
+import  torch
+from PIL import Image
 
 
 class ImageList():
@@ -38,7 +38,7 @@ class ImageLoader(Dataset):
         self.images = data["Images"]
         self.target_images = data["Annotations"]
         self.encoder= encoder_obj
-        self.colors= self.encoder_obj.color
+        self.colors= self.encoder.color
 
 
     def __len__(self):
@@ -49,10 +49,11 @@ class ImageLoader(Dataset):
             image = io.imread(self.images[index])[:3]
             label = io.imread(self.target_images)[:3]
         if self.extension == "tif":
-            image = Image.open(self.images[index])
-            label = Image.open(self.target_images[index])
+            image = skimage.external.tifffile.imread(self.images[index])
+            label = skimage.external.tifffile.imread(self.target_images[index])
         label = self.encoder.hotEncode(self.encoder.PerPixelClassMatrix(label))
         if self.transform:
             image = self.transform(image)
             label = self.transform(label)
+        label = torch.Tensor(label)
         return {"Image": image, "Label": label}
