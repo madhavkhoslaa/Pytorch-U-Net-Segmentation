@@ -8,9 +8,16 @@
 >Ch/ foler includes the example for creating a N class hot encoded image
 
 # Working
-``` git clone https://github.com/madhavkhoslaa/Pytorch-U-Net-Segmentation.git
-```
- 
+> git clone https://github.com/madhavkhoslaa/Pytorch-U-Net-Segmentation
+> Open the config.json file and put the location of your dataset in the json files and put the resolution of the Images(you cannot train model with different sized images and a single batch size because of PyTorch collate)
+> Then edit the train.py file and esit the file extensions.
+> Train the model, by running train.py
+
+# Known Issues
+> Single Channel tif files cannot be hot encoded right now. If you have a single channel tif file for the annotation, convert it into a png or a 3 channel tif file
+
+
+# ___ 
 > If you feel any need to contribute don’t feel shy to do a [pull request](https://github.com/madhavkhoslaa/U-Net-Segmentation/pulls) or [contact me](mailto:madhavkhosla@cock.li):D
 
 > [To Understand Repo structure](https://veniversum.me/git-visualizer/?owner=madhavkhoslaa&repo=Pytorch-U-Net-Segmentation) 
