@@ -1,6 +1,9 @@
 
 ## This repository is an implementation on the [U-Net Paper](https://arxiv.org/abs/1505.04597).  
  ![](https://i.imgur.com/EHDpics.png)
+<iframe src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+<iframe src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 
 * The script/getdataset.sh downloads the [The Inria Aerial Image Labeling](https://project.inria.fr/aerialimagelabeling/).This is not the best data set if you want to do aerial image segmentation on your own computer, because of computational limits because of 5k Images.
 * This Repo contains a hot encoder which encodes the dataset of n classes to a one hot encoded matrix of n* height* width for every class. The encoder can be seen at utils/ .
