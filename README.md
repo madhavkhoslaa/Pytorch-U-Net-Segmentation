@@ -12,7 +12,23 @@
 * Open the config.json file and put the location of your dataset in the json files and put the resolution of the Images(you cannot train model with different sized images and a single batch size because of PyTorch collate)
 * Then edit the train.py file and esit the file extensions.
 * Train the model, by running train.py
-### s
+### Using just the hot encoder
+* img= skimage.io.imread("someimage.jpeg")
+> Load your Image
+* encoder= HotEncoder(dir= '', extension="tif", is_binary= False)
+> Make an encoder object for you dataset.
+* classes= encoder.gen_colors()
+> This generates the number of classes from the number of colors in your annotated data.
+* ClassMatrix= encoder.PerPixelClassMatrix(image)
+> This method returns a martrix of the same size height and width but single channel, depecting class of each pixel in the Image.
+* encoded= encoder.HotEncode(ClassMatrix)
+> This encodes your Image to n channel matrix of same height and width
+>You also might want to view each channel depecting every class for an Image, to split the n channel matrix to n single channel matrices.
+* ch= encoder.channelSplit(encoded)
+> This returns n number of matrices depecting each class in an Image.
+This method is also used to encode the Image in the dataloader.
+
+
 # Known Issues
 * Single Channel tif files cannot be hot encoded right now. If you have a single channel tif file for the annotation, convert it into a png or a 3 channel tif file
 
