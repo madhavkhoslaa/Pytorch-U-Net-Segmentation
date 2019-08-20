@@ -1,7 +1,7 @@
 {
     "Train Data": "/path/to/images",
     "Annotations Data": "path/to/annotations/",
-    "Model Save": "/path/to/save/model/weights,
+    "Model Save": "path/to/save/model/weights,
     "Test Data": "path/to/test/data",
     "Resolution": "height,width,channel"
 }
