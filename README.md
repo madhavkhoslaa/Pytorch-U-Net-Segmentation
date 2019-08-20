@@ -31,7 +31,7 @@ This method is also used to encode the Image in the dataloader.
 
 # Known Issues
 * Single Channel tif files cannot be hot encoded right now. If you have a single channel tif file for the annotation, convert it into a png or a 3 channel tif file
-
+* Predict.py not tested
 
 # ___ 
 > If you feel any need to contribute don’t feel shy to do a [pull request](https://github.com/madhavkhoslaa/U-Net-Segmentation/pulls) or [contact me](mailto:madhavkhosla@cock.li):D
