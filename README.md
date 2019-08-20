@@ -5,7 +5,7 @@
 * The script/getdataset.sh downloads the [The Inria Aerial Image Labeling](https://project.inria.fr/aerialimagelabeling/).This is not the best data set if you want to do aerial image segmentation on your own computer, because of computational limits because of 5k Images.
 * This Repo contains a hot encoder which encodes the dataset of n classes to a one hot encoded matrix of n* height* width for every class. The encoder can be seen at utils/ .
 * To use train it, put the Images and the gt file locations in the config.json folder and execute train.py, a .pth file will be saved for the following model in the working directory.
->Ch/ foler includes the example for creating a N class hot encoded image
+* Ch/ foler includes the example for creating a N class hot encoded image
 
 # Working
 * git clone https://github.com/madhavkhoslaa/Pytorch-U-Net-Segmentation
