@@ -47,7 +47,7 @@ class ImageLoader(Dataset):
     def __getitem__(self, index):
         if self.extension == "png":
             image = io.imread(self.images[index])[:3]
-            label = io.imread(self.target_images)[:3]
+            label = io.imread(self.target_images[index])[:3]
         if self.extension == "tif":
             image = skimage.external.tifffile.imread(self.images[index])
             label = skimage.external.tifffile.imread(self.target_images[index])
@@ -55,5 +55,4 @@ class ImageLoader(Dataset):
         if self.transform:
             image = self.transform(image)
             label = self.transform(label)
-        label = torch.Tensor(label)
         return {"Image": image, "Label": label}
