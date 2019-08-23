@@ -20,14 +20,15 @@ ANNOTATIONS_DIR = conf["Annotations Data"]
 TEST_DATA = conf["Test Data"]
 MODEL_SAVE = conf["Model Save"]
 IMAGE_RESOLUTION = tuple(map(int, conf['Resolution'].split(',')))
+
 transforms_compose = transforms.Compose(
     [transforms.ToTensor()])
-
 params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
     epoch=4,
     n_classes=1)
+
 if torch.cuda.is_available():
     net = UNeT(n_classes=29, n_channels=3).cuda()
 else:
@@ -48,7 +49,7 @@ Train = ImageLoader(
 Test = ImageLoader(
     encoder_obj= encoder,
     data=Images.test_set,
-    extension="tifngng",
+    extension="tif",
     transform=transforms_compose)
 TrainLoader = DataLoader(
     Train,
@@ -60,12 +61,8 @@ ValLoader = DataLoader(
     shuffle=True)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-
-
 for i, data in enumerate(TrainLoader, 0):
     inputs, labels= data["Image"].permute(0, 3, 1, 2), data["Label"].permute(0, 3, 1, 2)
-    print(inputs, labels)
-
 for epoch in tqdm(
         range(params.hyperparameters["epoch"]), desc="Training Loop"):
     metrics = defaultdict()
@@ -75,7 +72,8 @@ for epoch in tqdm(
             inputs, labels = data["Image"].cuda(), data["Label"].cuda()
         else:
             inputs, labels = data["Image"], data["Label"]
-        outputs = net(inputs)
+        outputs = net(inputs).type(torch.DoubleTensor)
+
         loss = criterion(input=outputs,target=labels)
         #There was a dimension strip above here check if you need it again, lad.
         loss.backward()
