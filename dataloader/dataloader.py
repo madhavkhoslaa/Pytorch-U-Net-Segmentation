@@ -55,4 +55,4 @@ class ImageLoader(Dataset):
         if self.transform:
             image = self.transform(image)
             label = self.transform(label)
-        return {"Image": image, "Label": label}
+        return {"Image": image[:3], "Label": label}
