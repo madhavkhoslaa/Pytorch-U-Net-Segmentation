@@ -46,8 +46,8 @@ class ImageLoader(Dataset):
 
     def __getitem__(self, index):
         if self.extension == "png":
-            image = io.imread(self.images[index])[:3]
-            label = io.imread(self.target_images[index])[:3]
+            image = io.imread(self.images[index])
+            label = io.imread(self.target_images[index])
         if self.extension == "tif":
             image = skimage.external.tifffile.imread(self.images[index])
             label = skimage.external.tifffile.imread(self.target_images[index])
