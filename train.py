@@ -26,7 +26,7 @@ transforms_compose = transforms.Compose(
 params = hyperparameters(
     train_percentage=0.6,
     batch_size=1,
-    epoch=4,
+    epoch=200,
     n_classes=1)
 
 if torch.cuda.is_available():
@@ -34,11 +34,10 @@ if torch.cuda.is_available():
 else:
     net = UNeT(n_classes=29, n_channels=3)
 encoder= HotEncoder(is_binary= False, dir= ANNOTATIONS_DIR, extension="png")
-color_dict= encoder.gen_colors()
 Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
-    train_percentage=0.9,
+    train_percentage=1,
     extension="png")
 loss_val = Loss()
 Train = ImageLoader(
@@ -49,7 +48,7 @@ Train = ImageLoader(
 Test = ImageLoader(
     encoder_obj= encoder,
     data=Images.test_set,
-    extension="tif",
+    extension="png",
     transform=transforms_compose)
 TrainLoader = DataLoader(
     Train,
@@ -59,6 +58,7 @@ ValLoader = DataLoader(
     Test,
     batch_size=params.hyperparameters["batch_size"],
     shuffle=True)
+color_dict= encoder.gen_colors()
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 for i, data in enumerate(TrainLoader, 0):
@@ -72,10 +72,8 @@ for epoch in tqdm(
             inputs, labels = data["Image"].cuda(), data["Label"].cuda()
         else:
             inputs, labels = data["Image"], data["Label"]
-        outputs = net(inputs).type(torch.DoubleTensor)
-
-        loss = criterion(input=outputs,target=labels)
-        #There was a dimension strip above here check if you need it again, lad.
+        outputs = net(inputs).type(torch.cuda.DoubleTensor)
+        loss= Loss.dice_loss(pred= outputs, target= labels)
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
