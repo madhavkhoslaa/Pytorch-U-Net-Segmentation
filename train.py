@@ -73,7 +73,7 @@ for epoch in tqdm(
         else:
             inputs, labels = data["Image"], data["Label"]
         outputs = net(inputs).type(torch.cuda.DoubleTensor)
-        loss= Loss.dice_loss(pred= outputs, target= labels)
+        loss= Loss.dice_loss(input= outputs, target= labels)
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
