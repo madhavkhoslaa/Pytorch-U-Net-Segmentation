@@ -5,7 +5,7 @@ import torch.functional as F
 
 class Loss:
     @classmethod
-    def dice_loss(input, target):
+    def dice_loss(cls, input, target):
         smooth = 1.
         iflat = input.view(-1)
         tflat = target.view(-1)
