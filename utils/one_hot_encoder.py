@@ -71,7 +71,10 @@ class HotEncoder():
         for x in range(shape_[0]):
             for y in range(shape_[1]):
                 category = int(class_map[x][y])
-                encoded[x][y][category] = 255
+                try:
+                    encoded[x][y][ca] = 255
+                except:
+                    encoded[x][category] = 255
         return encoded
 
     def channelSplit(self, Nch_Hot_encoded):
