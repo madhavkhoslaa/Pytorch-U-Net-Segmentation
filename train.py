@@ -85,5 +85,10 @@ for epoch in tqdm(
                 loss.item(),
                 i))
         print("Running loss|", running_loss)
-torch.save(net.state_dict(), MODEL_SAVE + "/model.pt")
+torch.save({
+            'epoch': epoch,
+            'model_state_dict': net.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': loss,
+            },  MODEL_SAVE + "/model.pt")
 print("Model saved")
