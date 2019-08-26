@@ -28,13 +28,13 @@ params = hyperparameters(
     batch_size=1,
     epoch=4,
     n_classes=1)
-
-if torch.cuda.is_available():
-    net = UNeT(n_classes=29, n_channels=3).cuda()
-else:
-    net = UNeT(n_classes=29, n_channels=3)
-encoder= HotEncoder(is_binary= False, dir= ANNOTATIONS_DIR, extension="png")
 color_dict= encoder.gen_colors()
+N_CLASSES= len(color_dict)
+if torch.cuda.is_available():
+    net = UNeT(n_classes=N_CLASSES, n_channels=3).cuda()
+else:
+    net = UNeT(n_classes=N_CLASSES, n_channels=3)
+encoder= HotEncoder(is_binary= False, dir= ANNOTATIONS_DIR, extension="png")
 Images = ImageList(
     Images=IMAGE_DIR,
     Annotations=ANNOTATIONS_DIR,
