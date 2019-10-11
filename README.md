@@ -38,4 +38,5 @@ This method is also used to encode the Image in the dataloader.
 
 > [To Understand Repo structure](https://veniversum.me/git-visualizer/?owner=madhavkhoslaa&repo=Pytorch-U-Net-Segmentation) 
 
->Credits: [milesial's UNET Repository](https://github.com/milesial/Pytorch-UNet)
+# Credits: 
+[milesial's UNET Repository for the U-Net Model](https://github.com/milesial/Pytorch-UNet)
