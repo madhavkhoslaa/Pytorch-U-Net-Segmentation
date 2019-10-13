@@ -53,7 +53,7 @@ class HotEncoder():
             for y in range(shape_[1]):
                 clr = tuple(Image[x][y][:])[:3]
                 class_map[x][y] = color_dict[clr]
-        return class_map
+        return np.array(class_map)
 
     def hotEncode(self, class_map):
         """Inputs the class map of the image and returns the hot encoded
@@ -75,7 +75,7 @@ class HotEncoder():
                     encoded[x][y][ca] = 255
                 except:
                     encoded[x][category] = 255
-        return encoded
+        return np.array(encoded)
 
     def channelSplit(self, Nch_Hot_encoded):
         """The hot encoded Image is stored as stack of Hot encoded ndarrays
