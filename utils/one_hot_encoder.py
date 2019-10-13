@@ -50,6 +50,7 @@ class HotEncoder():
                 class_map[x][y]= self.color[clr]
         return class_map
     def HotEncode(self, class_map):
+        """Returns an n channel one hot encoded matrix of the same size as the Image"""
         assert isinstance(class_map, np.ndarray), "Class map has to be an ndarray and not {}".format(type(class_map))
         shape_= class_map.shape
         encoded= np.zeros(shape= (shape_[0], shape_[1], len(self.color)), dtype=float)
@@ -63,3 +64,9 @@ class HotEncoder():
         """The hot encoded Image is stored as stack of Hot encoded ndarrays
             this function returns a list of cll the channels"""
         return np.dsplit(Nch_Hot_encoded,Nch_Hot_encoded.shape[-1])
+    def onehot2classmap(self, one_hot):
+        """Method that takes one hot encoded matrix and outputs a classmap generated off the color dictionary"""
+        pass
+    def classmap2img(self, class_map):
+        """Method that takes class_map matrix and gives a matrix like the image"""
+        pass
