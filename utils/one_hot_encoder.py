@@ -78,4 +78,4 @@ class HotEncoder():
             i+=1
             j+=1
             k+=1
-        return blank_images
+        return blank_image
