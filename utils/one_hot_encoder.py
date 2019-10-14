@@ -9,6 +9,7 @@ class HotEncoder():
         self.dir = dir
         self.extension = extension
         self.is_binary = is_binary
+        self.shape= None
         if is_binary:
             self.color = {(0, 0, 0): 1, (255, 255, 255): 2}
         else:
@@ -37,6 +38,7 @@ class HotEncoder():
                             n_color+=1
                         else:
                             pass
+        self.shape= image.shape()                
         return self.color
 
     def PerPixelClassMatrix(self, Image):
@@ -69,4 +71,8 @@ class HotEncoder():
         pass
     def classmap2img(self, class_map):
         """Method that takes class_map matrix and gives a matrix like the image"""
-        pass
+        blank_image= np.zeros(self.shape)
+        i, j, k= 0
+        for pixel in class_map:
+            blank_image[i,j,k]= self.color[pixel]
+        return blank_images
