@@ -72,7 +72,10 @@ class HotEncoder():
     def classmap2img(self, class_map):
         """Method that takes class_map matrix and gives a matrix like the image"""
         blank_image= np.zeros(self.shape)
-        i, j, k= 0
+        i= j= k= 0
         for pixel in class_map:
             blank_image[i,j,k]= self.color[pixel]
+            i+=1
+            j+=1
+            k+=1
         return blank_images
