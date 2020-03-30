@@ -51,7 +51,7 @@ class ImageLoader(Dataset):
         if self.extension == "tif":
             image = skimage.external.tifffile.imread(self.images[index])
             label = skimage.external.tifffile.imread(self.target_images[index])
-        label = self.encoder.hotEncode(self.encoder.PerPixelClassMatrix(label))
+        label = self.encoder.HotEncode(self.encoder.PerPixelClassMatrix(label))
         if self.transform:
             image = self.transform(image)
             label = self.transform(label)
