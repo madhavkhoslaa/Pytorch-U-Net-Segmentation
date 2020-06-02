@@ -3,3 +3,5 @@ torchvision==0.2.2.post3
 scikit-image==0.14.2
 numpy==1.16.2
 numpydoc==0.8.0
+
+sphinx>=3.0.4 # not directly required, pinned by Snyk to avoid a vulnerability
