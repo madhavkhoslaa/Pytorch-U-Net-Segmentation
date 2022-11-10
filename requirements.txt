@@ -1,6 +1,9 @@
 torch==1.0.1.post2
 torchvision==0.2.2.post3
 scikit-image==0.14.2
-numpy==1.16.2
+numpy==1.22.2
 numpydoc==0.8.0
 pillow>=8.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
+dask>=2021.10.0 # not directly required, pinned by Snyk to avoid a vulnerability
+pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
+sphinx>=3.0.4 # not directly required, pinned by Snyk to avoid a vulnerability
