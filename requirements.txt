@@ -1,6 +1,16 @@
-torch==1.0.1.post2
+torch==1.13.1
 torchvision==0.2.2.post3
 scikit-image==0.14.2
-numpy==1.16.2
+numpy==1.22.2
 numpydoc==0.8.0
 pillow>=8.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
+certifi>=2024.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
+dask>=2021.10.0 # not directly required, pinned by Snyk to avoid a vulnerability
+idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
+jinja2>=3.1.6 # not directly required, pinned by Snyk to avoid a vulnerability
+networkx>=2.6 # not directly required, pinned by Snyk to avoid a vulnerability
+pygments>=2.15.0 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
+scipy>=1.10.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+sphinx>=3.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
